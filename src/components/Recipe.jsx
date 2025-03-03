@@ -5,7 +5,7 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { CiCircleMinus } from "react-icons/ci";
 
 export default function Recipe({ cuisine, dish, onSelect, onSave, isSaved }) {
-    
+
     const [isOpen, setIsOpen] = useState(false);
 
     const foodItem = RECIPES.find(recipe => recipe.dish === dish);
@@ -25,15 +25,16 @@ export default function Recipe({ cuisine, dish, onSelect, onSave, isSaved }) {
         iconStyles = 'text-blue-400 text-lg hover:text-blue-500 hover:text-bold hover:size-6'
     }
 
-    const buttonStyles = isOpen ? 'font-semibold' : 'font-normal hover:font-semibold';
-    
+    const buttonStyles = isOpen ? 'font-semibold text-xl' : ' text-xl font-normal hover:font-semibold';
+
 
     return (
         <>
             <li className="my-5 flex align-middle">
                 <button className="mr-4" onClick={() => onSave(foodItem)}>
-                    {inFavorites ? <CiCircleMinus className={iconStyles} /> : <IoIosAddCircleOutline className={iconStyles}/>}
-                </button><button className={buttonStyles} onClick={() => { handleIsOpen(dish) }}>{dish}</button>
+                    {inFavorites ? <CiCircleMinus className={iconStyles} /> : <IoIosAddCircleOutline className={iconStyles} />}
+                </button>
+                <button className={buttonStyles} onClick={() => { handleIsOpen(dish) }}>{dish}</button>
             </li>
             {isOpen &&
                 <div className="ml-5">
@@ -45,10 +46,11 @@ export default function Recipe({ cuisine, dish, onSelect, onSave, isSaved }) {
                         {foodItem?.ingredients.map((ingredient, index) =>
                             <li className="ml-3" key={index}>{ingredient}</li>)}
                     </ul>
-                    <ol className="list-decimal">
+                    <img src={foodItem?.img} alt={foodItem.dish} className="w-70 h-60 aspect-[13/9] rounded-sm"/>
+                    <ol className="list-decimal w-1/2">
                         <p className="mt-3 underline">Steps: </p>
                         {foodItem?.steps.map((step, index) =>
-                            <li className="ml-4" key={index}>{step}</li>)}
+                            <li className="ml-4 my-2" key={index}>{step}</li>)}
 
                     </ol>
                 </div>}
