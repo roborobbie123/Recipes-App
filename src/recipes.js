@@ -1,5 +1,5 @@
 export const CUISINES = ["Saved", "Italian", "Mexican", "Chinese", "Indian",
-    "Thai", "Japanese", "Mediterranean", "American", "Other"];
+    "Thai", "Mediterranean", "American", "Other"];
 
 export const RECIPES = [
     {
