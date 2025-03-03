@@ -3,11 +3,13 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg';
 import Header from './components/Header';
 import CuisineList from './components/CuisineList';
+import Cuisine from './components/Cuisine';
 
 
 
 function App() {
-  const [selectedCuisine, setSelectedCuisine] = useState('');
+  const [selectedCuisine, setSelectedCuisine] = useState('Italian');
+  
 
   function handleSelectCuisine(cuisine) {
     setSelectedCuisine(cuisine);
@@ -17,10 +19,8 @@ function App() {
   return (
     <>
       <Header />
-      <CuisineList onSelect={handleSelectCuisine} />
-      <div className="flex justify-center mt-10">
-        <h1 className="font-bold text-2xl">{selectedCuisine} Recipes</h1>
-      </div>
+      <CuisineList onSelect={handleSelectCuisine} selectedCuisine={selectedCuisine}/>
+      <Cuisine selectedCuisine={selectedCuisine} />
 
     </>
   );
