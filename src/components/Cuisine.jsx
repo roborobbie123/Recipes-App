@@ -1,33 +1,39 @@
 import { useState, useEffect } from "react";
 import Recipe from "./Recipe";
+import AlernateRecipe from "./AlernateRecipe";
 
-export default function Cuisine({ selectedCuisine, savedDishes }) {
+export default function Cuisine({ selectedCuisine, customDishes, onDelete }) {
     const [selectedDish, setSelectedDish] = useState('');
     const [isSaved, setIsSaved] = useState([]);
-    const [custom, setCustom] = useState(savedDishes);
+    const [isCustom, setIsCustom] = useState(customDishes);
 
     useEffect(() => {
-        const savedDishes = localStorage.getItem('savedDishes');
-        if (savedDishes) {
-            setIsSaved(JSON.parse(savedDishes));
-        }
-    }, [])
-
+        console.log("custom dishes updated:", customDishes);
+    }, [customDishes]);
 
     function handleSelectDish(dish) {
         setSelectedDish(dish);
     }
 
     function handleSave(dish) {
-        if (isSaved.some(savedDish => savedDish.dish === dish.dish)) {
-            const updatedSaved = isSaved.filter(savedDish => savedDish.dish !== dish.dish);
-            setIsSaved(updatedSaved);
-            localStorage.setItem('savedDishes', JSON.stringify(updatedSaved));
+        const validated = isSaved.filter(savedDish => savedDish != null);
 
+        if (validated.some(savedDish => savedDish.dish === dish.dish)) {
+            setIsSaved(validated.filter(savedDish => savedDish.dish !== dish.dish));
+            return;
         } else {
-            const updatedSaved = [dish, ...isSaved];
-            setIsSaved(updatedSaved);
-            localStorage.setItem('savedDishes', JSON.stringify(updatedSaved));
+            setIsSaved(prevSaved => [dish, ...prevSaved]);
+        }
+    }
+
+    function handleCustom(dish) {
+        const validated = isCustom.filter(savedDish => savedDish != null);
+
+        if (validated.some(savedDish => savedDish.dish === dish.dish)) {
+            onDelete(dish);
+            return;
+        } else {
+            setIsCustom(prevSaved => [dish, ...prevSaved]);
         }
     }
 
@@ -37,11 +43,21 @@ export default function Cuisine({ selectedCuisine, savedDishes }) {
                 <h1 className="font-bold text-2xl" >{selectedCuisine} Recipes</h1>
             </div>
             <ul className="ml-75 mt-5 w-3/4 flex flex-col">
+                {selectedCuisine === "Custom" &&
+                    <>
+                        {customDishes.length > 0 ? customDishes.map(
+                            dish => <AlernateRecipe dish={dish} key={dish.dish} onSelect={handleSelectDish}
+                                onSave={handleCustom} isSaved={isCustom} />) :
+                            <div>
+                                <p>No saved recipes</p>
+                            </div>}
+                    </>
+                }
                 {selectedCuisine === "Saved" &&
                     <>
-                        
-                        {isSaved.length > 0 ? isSaved.map(dish => <Recipe key={dish.dish} cuisine={selectedCuisine} dish={dish.dish}
-                            onSelect={handleSelectDish} onSave={handleSave} isSaved={isSaved} />) :
+                        {isSaved.length > 0 ? isSaved.filter(dish => dish && dish.dish).map(
+                            dish => <Recipe key={dish.dish} cuisine={selectedCuisine} dish={dish.dish}
+                                onSelect={handleSelectDish} onSave={handleSave} isSaved={isSaved} />) :
                             <div>
                                 <p>No saved recipes</p>
                             </div>}

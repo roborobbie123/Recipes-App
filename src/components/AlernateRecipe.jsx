@@ -1,21 +1,18 @@
 import { useState } from "react";
 
-import { RECIPES } from "../recipes";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { CiCircleMinus } from "react-icons/ci";
 
-export default function Recipe({ cuisine, dish, onSelect, onSave, isSaved }) {
+export default function Recipe({ dish, onSelect, onSave }) {
 
     const [isOpen, setIsOpen] = useState(false);
-
-    const foodItem = RECIPES.find(recipe => recipe.dish === dish);
 
     function handleIsOpen(dish) {
         setIsOpen(prev => !prev);
         onSelect(dish);
     }
 
-    const inFavorites = isSaved.some(savedDish => savedDish && savedDish.dish === foodItem?.dish);
+    const inFavorites = true;
 
     let iconStyles = '';
 
@@ -31,29 +28,31 @@ export default function Recipe({ cuisine, dish, onSelect, onSave, isSaved }) {
     return (
         <>
             <li className="my-5 flex align-middle">
-                <button className="mr-4" onClick={() => onSave(foodItem)}>
-                    {inFavorites ? <CiCircleMinus className={iconStyles} /> : <IoIosAddCircleOutline className={iconStyles} />}
+                <button className="mr-4" onClick={() => onSave(dish)}>
+                    <CiCircleMinus className={iconStyles} />
                 </button>
-                <button className={buttonStyles} onClick={() => { handleIsOpen(dish) }}>{dish}</button>
+                <button className={buttonStyles} onClick={() => { handleIsOpen(dish) }}>{dish.dish}</button>
             </li>
             {isOpen &&
                 <div className="ml-5">
                     <ul className="list-disc mb-3">
                         <div className="my-3">
-                            <span className="underline">Time:</span><span> {foodItem?.time}</span>
+                            <span className="underline">Time:</span><span> {dish.time}</span>
                         </div>
                         <p className="underline">Ingredients: </p>
-                        {foodItem?.ingredients.map((ingredient, index) =>
+                        {dish.ingredients.map((ingredient, index) =>
                             <li className="ml-3" key={index}>{ingredient}</li>)}
                     </ul>
-                    <div className="w-1/3 h-100">
-                        <a href={foodItem?.link} target="_blank" rel="noopener noreferrer" >
-                            <img src={foodItem?.img} alt={foodItem?.dish} className="w-full h-full rounded-sm" />
-                        </a>
-                    </div>
+                    {dish.img &&
+                        <div className="w-1/3 h-100">
+                            <a href={dish.link} target="_blank" rel="noopener noreferrer" >
+                                <img src={dish.img} alt={dish.dish} className="w-full h-full rounded-sm" />
+                            </a>
+                        </div>
+                    }
                     <ol className="list-decimal w-1/2">
                         <p className="mt-3 underline">Steps: </p>
-                        {foodItem?.steps.map((step, index) =>
+                        {dish.steps.map((step, index) =>
                             <li className="ml-4 my-2" key={index}>{step}</li>)}
 
                     </ol>
@@ -63,4 +62,3 @@ export default function Recipe({ cuisine, dish, onSelect, onSave, isSaved }) {
     );
 
 }
-
