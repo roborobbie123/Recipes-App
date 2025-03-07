@@ -25,20 +25,17 @@ function App() {
     if (newDishes.length < 1) {
       setNewDishes([dish]);
     }
-    setNewDishes(prevDishes => {
-      [dish, ...prevDishes];
-    })
+    setNewDishes(prevDishes =>
+      [dish, ...prevDishes])
+    console.log(newDishes);
   }
-
-
-
 
   return (
     <>
       <Header />
-      <CuisineList onSelect={handleSelectCuisine} selectedCuisine={selectedCuisine} showAdd={handleShowAddDish}/>
-      {!showAdd && <Cuisine selectedCuisine={selectedCuisine} />}
-      {showAdd && <CustomDish onAdd={handleAddDish}/>}
+      <CuisineList onSelect={handleSelectCuisine} selectedCuisine={selectedCuisine} showAdd={handleShowAddDish} />
+      {!showAdd && <Cuisine selectedCuisine={selectedCuisine} savedDishes={newDishes} />}
+      {showAdd && <CustomDish onAdd={handleAddDish} />}
 
     </>
   );

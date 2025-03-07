@@ -1,56 +1,45 @@
 import { useRef, useState } from "react";
 
+let ingredientsArr = [];
+let stepsArr = [];
+
 export default function CustomDish({ onAdd, ...props }) {
-    const [ingredients, setIngredients] = useState([]);
-    const [steps, setSteps] = useState([]);
-
-    function updateIngredient() {
-
-    }
-
-    function addIngredientField() {
-        setIngredients([...ingredients, '']);
-    }
-
-    function updateSteps() {
-
-    }
-
-    function addStepField() {
-        setSteps([...steps, '']);
-    }
-
-    function onDelete(type, index) {
-        if (type === 'ingredient') {
-            setIngredients(ingredients.filter((_, i) => i !== index));
-        }
-        if (type === 'step') {
-            setSteps(steps.filter((_, i) => i !== index));
-        }
-        
-
-    }
+    const [ingredientCount, setIngredientCount] = useState(0);
+    const [stepCount, setStepCount] = useState(0);
 
     const timeRef = useRef();
     const dishRef = useRef();
- 
+   
+    function addIngredientField() {
+        setIngredientCount(prevIngredients => prevIngredients + 1);
+    }
 
-    const ingredientsArr = [];
-    const stepsArr = [];
+    function addStepField() {
+        setStepCount(prevSteps => prevSteps + 1);
+    }
 
+    function updateIngredients(index, value) {
+        ingredientsArr[index] = value;
+        
+    }
 
+    function updateSteps(index, value) {
+        stepsArr[index] = value;
+    }
 
-    function addNewDish(dish, ingredients, steps) {
+    function addNewDish(ingredients, steps, time, dish) {
         const newDish = {
             link: '',
             img: '',
-            time: timeRef.current.value,
-            dish: dishRef.current.value,
+            time: time,
+            dish: dish,
             ingredients: ingredients,
             steps: steps
         }
-
         onAdd(newDish);
+
+        ingredientsArr = [];
+        stepsArr = [];
     }
 
     return (
@@ -61,22 +50,19 @@ export default function CustomDish({ onAdd, ...props }) {
                 <label>Time: <input ref={timeRef} type="text" className="bg-amber-100" /></label>
 
                 <h2>Ingredients:</h2>
-                
-                {ingredients.map((ingredient, index) => (
-                    <label key={index}><input key={index} value={ingredient} className="bg-amber-100" /><button onClick={() => onDelete('ingredient', index)} className="hover:text-blue-400 ml-3">Delete</button></label>
-                ))}
+                {Array.from(Array(ingredientCount)).map((value, index) => {
+                    return <input key={value} onChange={(event) => updateIngredients(index, event.target.value)} className="bg-amber-100" type="text"/>
+                })}
                 <button onClick={addIngredientField} className="border bg-amber-300 px-1 rounded-sm hover:border-2 shadow-2xl">+ ingredient</button>
                 
                 <h2>Steps:</h2>
-                    {steps.map((step, index) => (
-                        <label key={index}><input key={index} value={step} className="bg-amber-100" /><button onClick={() => onDelete('step', index)} className="hover:text-blue-400 ml-3">Delete</button></label>
-                    ))}
+                {Array.from(Array(stepCount)).map((value, index) => {
+                    return <input key={value} onChange={(event) => updateSteps(index, event.target.value)} className="bg-amber-100" type="text"/>
+                })}
                 <button onClick={addStepField} className="border bg-amber-300 px-1 rounded-sm hover:border-2 shadow-2xl">+ step</button>
-                <button className='border px-1 rounded-sm hover:border-2 shadow-2xl'>Save</button>
+
+                <button className='border px-1 rounded-sm hover:border-2 shadow-2xl' onClick={() => addNewDish(ingredientsArr, stepsArr, timeRef.current.value, dishRef.current.value)}>Save</button>
             </div>
         </div>
     );
-
-
-
 }

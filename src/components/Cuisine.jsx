@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import Recipe from "./Recipe";
 
-export default function Cuisine({ selectedCuisine }) {
+export default function Cuisine({ selectedCuisine, savedDishes }) {
     const [selectedDish, setSelectedDish] = useState('');
     const [isSaved, setIsSaved] = useState([]);
+    const [custom, setCustom] = useState(savedDishes);
 
     useEffect(() => {
         const savedDishes = localStorage.getItem('savedDishes');
@@ -38,12 +39,14 @@ export default function Cuisine({ selectedCuisine }) {
             <ul className="ml-75 mt-5 w-3/4 flex flex-col">
                 {selectedCuisine === "Saved" &&
                     <>
+                        
                         {isSaved.length > 0 ? isSaved.map(dish => <Recipe key={dish.dish} cuisine={selectedCuisine} dish={dish.dish}
                             onSelect={handleSelectDish} onSave={handleSave} isSaved={isSaved} />) :
                             <div>
                                 <p>No saved recipes</p>
                             </div>}
                     </>
+
                 }
                 {selectedCuisine === "Italian" &&
                     <>
