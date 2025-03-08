@@ -35,6 +35,7 @@ function App() {
 
   function handleShowAddDish() {
     setShowAdd(prevState => !prevState);
+    setSelectedCuisine('Custom');
   }
 
   function handleAddDish(time, dish, ingredients, steps) {
