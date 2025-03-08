@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header';
 import CuisineList from './components/CuisineList';
 import Cuisine from './components/Cuisine';
@@ -37,7 +37,7 @@ function App() {
     setShowAdd(prevState => !prevState);
   }
 
-  const handleAddDish = useCallback(function handleAddDish(time, dish, ingredients, steps) {
+  function handleAddDish(time, dish, ingredients, steps) {
     const newDish = {
       link: '',
       img: '',
@@ -64,7 +64,7 @@ function App() {
       ingredientCount: 0
     })
     console.log('new dishes: ' + newDishes);
-  });
+  };
 
   function handleDeleteDish(dish) {
     setNewDishes(prevDishes => (
@@ -72,37 +72,37 @@ function App() {
     ))
   }
 
-  const handleAddName = useCallback(function handleAddName(newName) {
+  function handleAddName(newName) {
     setCustomDish(prevState => ({
       ...prevState,
       dish: newName
     }))
-  }, [])
+  }
 
-  const handleAddTime = useCallback(function handleAddTime(newTime) {
+  function handleAddTime(newTime) {
     setCustomDish(prevState => ({
       ...prevState,
       time: newTime
     }))
-  }, []);
+  };
 
-  const addIngredientField = useCallback(function addIngredientField() {
+  function addIngredientField() {
     setCustomDish(prevState => ({
       ...prevState,
       ingredients: [...prevState.ingredients, ''],
       ingredientCount: prevState.ingredientCount + 1
     }))
-  }, [])
+  }
 
-  const addStepField = useCallback(function addStepField() {
+  function addStepField() {
     setCustomDish(prevState => ({
       ...prevState,
       steps: [...prevState.steps, ''],
       stepsCount: prevState.stepsCount + 1
     }))
-  }, [])
+  }
 
-  const updateIngredients = useCallback(function updateIngredients(index, value) {
+  function updateIngredients(index, value) {
     setCustomDish(prevState => {
       const newIngredients = [...prevState.ingredients];
       newIngredients[index] = value;
@@ -112,9 +112,9 @@ function App() {
       }
     })
     console.log('new dishes: ' + newDishes);
-  }, [])
+  }
 
-  const updateSteps = useCallback(function updateSteps(index, value) {
+  function updateSteps(index, value) {
     setCustomDish(prevState => {
       const newSteps = [...prevState.steps];
       newSteps[index] = value;
@@ -124,9 +124,7 @@ function App() {
       }
     })
     console.log('new dishes: ' + newDishes);
-  }, [])
-
-
+  }
 
   return (
     <>

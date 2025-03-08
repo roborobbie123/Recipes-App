@@ -7,10 +7,6 @@ export default function Cuisine({ selectedCuisine, customDishes, onDelete }) {
     const [isSaved, setIsSaved] = useState([]);
     const [isCustom, setIsCustom] = useState(customDishes);
 
-    useEffect(() => {
-        console.log("custom dishes updated:", customDishes);
-    }, [customDishes]);
-
     function handleSelectDish(dish) {
         setSelectedDish(dish);
     }
@@ -42,7 +38,7 @@ export default function Cuisine({ selectedCuisine, customDishes, onDelete }) {
             <div className="flex justify-center mt-10">
                 <h1 className="font-bold text-2xl" >{selectedCuisine} Recipes</h1>
             </div>
-            <ul className="ml-75 mt-5 w-3/4 flex flex-col">
+            <ul className="md:ml-75 sm:ml-5 mt-5 w-3/4 flex flex-col flex-wrap">
                 {selectedCuisine === "Custom" &&
                     <>
                         {customDishes.length > 0 ? customDishes.map(
