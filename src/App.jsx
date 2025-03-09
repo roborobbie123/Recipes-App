@@ -8,7 +8,7 @@ import CustomDish from './components/CustomDish';
 function App() {
   const [selectedCuisine, setSelectedCuisine] = useState('Saved');
   const [showAdd, setShowAdd] = useState(false);
-  const [newDishes, setNewDishes] = useState([]);
+  const [newDishes, setNewDishes] = useState(JSON.parse(localStorage.getItem('newDishes')) || []);
 
   const [customDish, setCustomDish] = useState({
     link: '',
@@ -20,6 +20,10 @@ function App() {
     stepsCount: 0,
     ingredientCount: 0
   })
+
+  useEffect(() => {
+    localStorage.setItem('newDishes', JSON.stringify(newDishes))
+  }, [newDishes]);
 
   console.log(customDish);
 

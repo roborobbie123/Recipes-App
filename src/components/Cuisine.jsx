@@ -4,8 +4,16 @@ import AlernateRecipe from "./AlernateRecipe";
 
 export default function Cuisine({ selectedCuisine, customDishes, onDelete }) {
     const [selectedDish, setSelectedDish] = useState('');
-    const [isSaved, setIsSaved] = useState([]);
+
+    const [isSaved, setIsSaved] = useState(() => {
+        return JSON.parse(localStorage.getItem('isSaved')) || []
+    });
+
     const [isCustom, setIsCustom] = useState(customDishes);
+
+    useEffect(() => {
+        localStorage.setItem('isSaved', JSON.stringify(isSaved));
+    }, [isSaved]);
 
     function handleSelectDish(dish) {
         setSelectedDish(dish);
