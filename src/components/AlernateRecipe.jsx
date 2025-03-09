@@ -2,14 +2,21 @@ import { useState } from "react";
 
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { CiCircleMinus } from "react-icons/ci";
+import { CiEdit } from "react-icons/ci";
+import CustomDish from "./CustomDish";
 
-export default function Recipe({ dish, onSelect, onSave }) {
+export default function Recipe({ dish, onSelect, onSave, handleEdit }) {
 
     const [isOpen, setIsOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     function handleIsOpen(dish) {
         setIsOpen(prev => !prev);
         onSelect(dish);
+    }
+
+    function handleEdit() {
+        setIsEditing(prevState => !prevState);
     }
 
     const inFavorites = true;
@@ -32,7 +39,9 @@ export default function Recipe({ dish, onSelect, onSave }) {
                     <CiCircleMinus className={iconStyles} />
                 </button>
                 <button className={buttonStyles} onClick={() => { handleIsOpen(dish) }}>{dish.dish}</button>
+                <button className="ml-5" onClick={() => handleEdit()}><CiEdit className="hover:text-bold hover:size-6 size-5" /></button>
             </li>
+            {isEditing && <CustomDish />}
             {isOpen &&
                 <div className="ml-5">
                     <ul className="list-disc mb-3">
